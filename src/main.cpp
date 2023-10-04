@@ -15,7 +15,8 @@ void setup()
 
 void loop()
 {
-    Serial.println("reading moistureSensor:");
-    Serial.println(moistureSensor.getSensorValue());
+    Serial.println("reading moistureSensor: "+ moistureSensor.getSensorValue());
+    // Serial.println("Which is a moisture percentage of: "+ String(moistureSensor.getMoisturePercentage()));
+
     delay(1000);
 }
