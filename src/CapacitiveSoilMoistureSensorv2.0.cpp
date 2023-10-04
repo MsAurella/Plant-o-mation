@@ -5,6 +5,7 @@ CapacitiveSoilMoistureSensor::CapacitiveSoilMoistureSensor(int pin, int minSenso
                                                                                                               minSensorValue(minSensorValue),
                                                                                                               maxSensorValue(maxSensorValue)
 {
+    // assert min < max
 }
 
 int CapacitiveSoilMoistureSensor::getSensorValue()
@@ -16,11 +17,8 @@ int CapacitiveSoilMoistureSensor::getSensorValue()
 float CapacitiveSoilMoistureSensor::getMoisturePercentage()
 {
     // todo assert pmin, max is set
-    int calibratedSensorValue = getSensorValue();
-     Serial.println("calsensval"+ calibratedSensorValue);
-
+    float calibratedSensorValue = getSensorValue()-minSensorValue;
     float percentage = calibratedSensorValue/(maxSensorValue-minSensorValue)*100;
-    Serial.println(percentage);
 
     // todo warning if <0 or >100
     if (percentage < 0 ){
@@ -28,5 +26,6 @@ float CapacitiveSoilMoistureSensor::getMoisturePercentage()
     } else if (percentage >=100 ) {
         percentage = 100;
     }
+    percentage = 100-percentage;
     return percentage;
 }
