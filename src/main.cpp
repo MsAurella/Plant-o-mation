@@ -1,9 +1,12 @@
 // testing
 #include <Arduino.h>
+#include "CapacitiveSoilMoistureSensorv2.0.hpp"
 
 #define PIN_MOISTURE 36
 #define MOISTURE_MIN 1000 // wet
 #define MOISTURE_MAX 3000 // dry
+
+auto moistureSensor = CapacitiveSoilMoistureSensor(PIN_MOISTURE, MOISTURE_MIN, MOISTURE_MAX);
 
 void setup()
 {
@@ -12,8 +15,7 @@ void setup()
 
 void loop()
 {
-    int raw_moisture = analogRead(PIN_MOISTURE);
-    Serial.println("Hello world!");
-    Serial.println(raw_moisture);
+    Serial.println("reading moistureSensor:");
+    Serial.println(moistureSensor.getSensorValue());
     delay(1000);
 }
