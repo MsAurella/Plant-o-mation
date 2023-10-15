@@ -13,6 +13,9 @@
 
 auto moistureSensor = CapacitiveSoilMoistureSensor(ANALOG_READ_MOISTURE, MOISTURE_MIN, MOISTURE_MAX);
 auto pump = UnderWaterPump(DIGITAL_WRITE_PUMP);
+bool isOff = true;
+bool start = false;
+bool lastButton = true;
 
 void setup()
 {
@@ -22,19 +25,34 @@ void setup()
 
 void loop()
 {
-    // Serial.println("reading moistureSensor: " + String(moistureSensor.getSensorValue()));
-    // Serial.println("Which is a moisture percentage of: " + String(moistureSensor.getMoisturePercentage()));
-
     bool button_not_pressed = digitalRead(DIGITAL_IN);
-    if (button_not_pressed) {
-        Serial.println("Pump OFF");
-        pump.off();
-    } else {
-        Serial.println("Pump ON");
-        pump.on();
+    if (!button_not_pressed && lastButton != button_not_pressed){
+        start = !start;
+        Serial.print("Switching system to: ");
+        Serial.println(start);
     }
+    lastButton = button_not_pressed;
 
+    if (start){
+    auto moisturePercentage = moistureSensor.getMoisturePercentage();
+    Serial.println("Plant has a moisture percentage of: " + String(moisturePercentage));
 
-
+    if (moisturePercentage < 40) {
+        if (isOff){
+            Serial.println("Pump to ON, DDOOOORRRRSSTTTTT!!!!!");
+            isOff = false;
+            pump.on();
+        }
+    } else {
+        if (!isOff){
+            Serial.println("Pump to OFF, is al nat genoeg hiero");
+            isOff = true;
+            pump.off();
+        }
+    }
+    } else {
+        pump.off();
+        isOff = true;
+    }
     delay(100);
 }
