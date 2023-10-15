@@ -20,37 +20,46 @@ bool lastButton = true;
 void setup()
 {
     Serial.begin(9600);
-    pinMode (27, INPUT_PULLUP);
+    pinMode(27, INPUT_PULLUP);
 }
 
 void loop()
 {
     bool button_not_pressed = digitalRead(DIGITAL_IN);
-    if (!button_not_pressed && lastButton != button_not_pressed){
+    if (!button_not_pressed && lastButton != button_not_pressed)
+    {
         start = !start;
         Serial.print("Switching system to: ");
         Serial.println(start);
     }
     lastButton = button_not_pressed;
 
-    if (start){
-    auto moisturePercentage = moistureSensor.getMoisturePercentage();
-    Serial.println("Plant has a moisture percentage of: " + String(moisturePercentage));
+    if (start)
+    {
+        auto moisturePercentage = moistureSensor.getMoisturePercentage();
+        Serial.println("Plant has a moisture percentage of: " + String(moisturePercentage));
 
-    if (moisturePercentage < 40) {
-        if (isOff){
-            Serial.println("Pump to ON, DDOOOORRRRSSTTTTT!!!!!");
-            isOff = false;
-            pump.on();
+        if (moisturePercentage < 40)
+        {
+            if (isOff)
+            {
+                Serial.println("Pump to ON, DDOOOORRRRSSTTTTT!!!!!");
+                isOff = false;
+                pump.on();
+            }
         }
-    } else {
-        if (!isOff){
-            Serial.println("Pump to OFF, is al nat genoeg hiero");
-            isOff = true;
-            pump.off();
+        else
+        {
+            if (!isOff)
+            {
+                Serial.println("Pump to OFF, is al nat genoeg hiero");
+                isOff = true;
+                pump.off();
+            }
         }
     }
-    } else {
+    else
+    {
         pump.off();
         isOff = true;
     }
