@@ -9,11 +9,13 @@ class Plant
 
 public:
     Plant(std::string name, UnderWaterPump &pump, CapacitiveSoilMoistureSensor &moistureSensor); // replace with interface
+    void waterIfRequired();
+    void shutDown();
+
+private:
     bool needsWatering();
     void turnWateringOn();
     void turnWateringOff();
-
-private:
     int minimalMoisturePercentage;
     std::string name;
     UnderWaterPump pump;

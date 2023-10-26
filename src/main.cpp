@@ -27,21 +27,13 @@ void setup()
 
 void loop()
 {
-
     if (button.isSystemSwitchedOn())
     {
-        if (Linsey.needsWatering())
-        {
-            Linsey.turnWateringOn();
-        }
-        else
-        {
-            Linsey.turnWateringOff();
-        }
+        Linsey.waterIfRequired();
     }
     else
     {
-        Linsey.turnWateringOff();
+        Linsey.shutDown();
     }
     delay(100);
 }
