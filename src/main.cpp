@@ -2,6 +2,9 @@
 #include <Arduino.h>
 #include "CapacitiveSoilMoistureSensorv2.0.hpp"
 #include "UnderWaterPump.hpp"
+#include "Button.hpp"
+#include "Plant.hpp"
+#include <vector>
 
 #define ANALOG_READ_MOISTURE 36
 #define MOISTURE_MIN 1000 // wet
@@ -9,51 +12,43 @@
 
 #define DIGITAL_WRITE_PUMP 4
 
-#define DIGITAL_IN 27
+#define DIGITAL_IN_BUTTON 27
 
 auto moistureSensor = CapacitiveSoilMoistureSensor(ANALOG_READ_MOISTURE, MOISTURE_MIN, MOISTURE_MAX);
 auto pump = UnderWaterPump(DIGITAL_WRITE_PUMP);
-bool isOff = true;
-bool start = false;
-bool lastButton = true;
+auto button = Button(DIGITAL_IN_BUTTON);
+
+// auto Linsey = Plant();
+// std::vector<Plant> familie; 
 
 void setup()
 {
     Serial.begin(9600);
-    pinMode(27, INPUT_PULLUP);
+    // pinMode(27, INPUT_PULLUP);
+    // familie.emplace_back(Linsey);
 }
 
 void loop()
 {
-    bool button_not_pressed = digitalRead(DIGITAL_IN);
-    if (!button_not_pressed && lastButton != button_not_pressed)
-    {
-        start = !start;
-        Serial.print("Switching system to: ");
-        Serial.println(start);
-    }
-    lastButton = button_not_pressed;
 
-    if (start)
+    if (button.isSystemSwitchedOn())
     {
         auto moisturePercentage = moistureSensor.getMoisturePercentage();
-        Serial.println("Plant has a moisture percentage of: " + String(moisturePercentage));
+        // Serial.println("Plant has a moisture percentage of: " + String(moisturePercentage));
 
         if (moisturePercentage < 40)
         {
-            if (isOff)
+            if (!pump.isPumpOn())
             {
                 Serial.println("Pump to ON, DDOOOORRRRSSTTTTT!!!!!");
-                isOff = false;
                 pump.on();
             }
         }
         else
         {
-            if (!isOff)
+            if (pump.isPumpOn())
             {
                 Serial.println("Pump to OFF, is al nat genoeg hiero");
-                isOff = true;
                 pump.off();
             }
         }
@@ -61,7 +56,6 @@ void loop()
     else
     {
         pump.off();
-        isOff = true;
     }
     delay(100);
 }
