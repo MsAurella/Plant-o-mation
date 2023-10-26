@@ -18,14 +18,11 @@ auto moistureSensor = CapacitiveSoilMoistureSensor(ANALOG_READ_MOISTURE, MOISTUR
 auto pump = UnderWaterPump(DIGITAL_WRITE_PUMP);
 auto button = Button(DIGITAL_IN_BUTTON);
 
-// auto Linsey = Plant();
-// std::vector<Plant> familie; 
+auto Linsey = Plant("Linsey", pump, moistureSensor);
 
 void setup()
 {
     Serial.begin(9600);
-    // pinMode(27, INPUT_PULLUP);
-    // familie.emplace_back(Linsey);
 }
 
 void loop()
@@ -33,29 +30,18 @@ void loop()
 
     if (button.isSystemSwitchedOn())
     {
-        auto moisturePercentage = moistureSensor.getMoisturePercentage();
-        // Serial.println("Plant has a moisture percentage of: " + String(moisturePercentage));
-
-        if (moisturePercentage < 40)
+        if (Linsey.needsWatering())
         {
-            if (!pump.isPumpOn())
-            {
-                Serial.println("Pump to ON, DDOOOORRRRSSTTTTT!!!!!");
-                pump.on();
-            }
+            Linsey.turnWateringOn();
         }
         else
         {
-            if (pump.isPumpOn())
-            {
-                Serial.println("Pump to OFF, is al nat genoeg hiero");
-                pump.off();
-            }
+            Linsey.turnWateringOff();
         }
     }
     else
     {
-        pump.off();
+        Linsey.turnWateringOff();
     }
     delay(100);
 }

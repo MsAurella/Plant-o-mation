@@ -1,19 +1,29 @@
 #include "Plant.hpp"
-// #include <Arduino.h>
+#include <Arduino.h>
 
-// UnderWaterPump::UnderWaterPump(int pin) : pin(pin)
-// {
-//     pinMode(pin, OUTPUT);
-// }
+Plant::Plant(std::string name,
+             UnderWaterPump &pump,
+             CapacitiveSoilMoistureSensor &moistureSensor) : name(name), pump(pump), moistureSensor(moistureSensor), minimalMoisturePercentage(40) {}
 
-// void UnderWaterPump::on()
-// {
-//     // todo assert pin is set
-//     digitalWrite(pin, HIGH);
-// }
+bool Plant::needsWatering()
+{
+    auto moisturePercentage = moistureSensor.getMoisturePercentage();
+    return (moisturePercentage < minimalMoisturePercentage);
+}
 
-// void UnderWaterPump::off()
-// {
-//     // todo assert pin is set
-//     digitalWrite(pin, LOW);
-// }
+void Plant::turnWateringOn()
+{
+    if (!pump.isPumpOn())
+    {
+        Serial.println(("Plant " + name + " switches the pump ON, DDOOOORRRRSSTTTTT!!!!!").c_str());
+        pump.on();
+    }
+}
+void Plant::turnWateringOff()
+{
+    if (pump.isPumpOn())
+    {
+        Serial.println(("Plant " + name + " switches the pump OFF, ground is sufficently saturated.").c_str());
+        pump.off();
+    }
+}

@@ -19,8 +19,12 @@ bool Button::isSystemSwitchedOn()
     if (!button_not_pressed && lastButton != button_not_pressed)
     {
         switchedOn = !switchedOn;
-        Serial.print("Switching system to: ");
-        Serial.println(switchedOn);
+        if (switchedOn)
+        {
+                Serial.println("Switching system ON");
+        } else{
+                Serial.println("Switching system OFF");
+        }
     }
     lastButton = button_not_pressed;
     return switchedOn;
