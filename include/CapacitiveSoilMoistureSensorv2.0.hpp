@@ -1,7 +1,6 @@
 #pragma once
 
-class CapacitiveSoilMoistureSensor
-{
+class CapacitiveSoilMoistureSensor {
 
 public:
   CapacitiveSoilMoistureSensor(int pin, int minSensorValue, int maxSensorValue);

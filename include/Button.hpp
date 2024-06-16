@@ -1,14 +1,13 @@
 #pragma once
 
-class Button
-{
+class Button {
 public:
-    Button(int pin);
-    bool isSystemSwitchedOn();
-    bool readSensor();
+  Button(int pin);
+  bool isSystemSwitchedOn();
+  bool readSensor();
 
 private:
-    int pin;
-    bool switchedOn;
-    bool lastButton;
+  int pin;
+  bool switchedOn;
+  bool lastButton;
 };
