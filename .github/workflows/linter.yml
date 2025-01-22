@@ -1,18 +1,18 @@
-name: Lint Code Base
+# name: Lint Code Base
 
-on: push
+# on: push
 
-jobs:
-  super-lint:
-    name: Lint-code-base
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# jobs:
+#   super-lint:
+#     name: Lint-code-base
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Lint Code Base
-        uses: github/super-linter@v4
-        env:
-          FIX_CLANG_FORMAT: true
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Lint Code Base
+#         uses: github/super-linter@v4
+#         env:
+#           FIX_CLANG_FORMAT: true
+#           DEFAULT_BRANCH: main
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

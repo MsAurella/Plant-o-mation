@@ -1,0 +1,28 @@
+name: Clang Format
+
+on: push
+
+jobs:
+    clang-format:
+        name: Check clang-format
+        runs-on: ubuntu-latest
+        steps:
+          - name: Check out code from GitHub
+            uses: actions/checkout@v4.1.7
+          - name: Restore Python
+            uses: ./.github/actions/restore-python
+            with:
+              python-version: ${{ env.DEFAULT_PYTHON }}
+              cache-key: ${{ needs.common.outputs.cache-key }}
+          - name: Install clang-format
+            run: |
+              . venv/bin/activate
+              pip install clang-format -c requirements_dev.txt
+          - name: Run clang-format
+            run: |
+              . venv/bin/activate
+              script/clang-format -i
+              git diff-index --quiet HEAD --
+          - name: Suggested changes
+            run: script/ci-suggest-changes
+            if: always()
