@@ -1,7 +1,7 @@
 #include "Button.hpp"
 #include <Arduino.h>
 
-Button::       Button(int pin) : pin(pin) {
+Button::Button(int pin) : pin(pin) {
   pinMode(pin, INPUT_PULLUP);
 
   switchedOn = false;
