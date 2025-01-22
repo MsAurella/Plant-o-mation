@@ -1,9 +1,9 @@
 // testing
-#include <Arduino.h>
-#include "CapacitiveSoilMoistureSensorv2.0.hpp"
-#include "UnderWaterPump.hpp"
 #include "Button.hpp"
+#include "CapacitiveSoilMoistureSensorv2.0.hpp"
 #include "Plant.hpp"
+#include "UnderWaterPump.hpp"
+#include <Arduino.h>
 #include <vector>
 
 #define ANALOG_READ_MOISTURE 36
@@ -14,26 +14,20 @@
 
 #define DIGITAL_IN_BUTTON 27
 
-auto moistureSensor = CapacitiveSoilMoistureSensor(ANALOG_READ_MOISTURE, MOISTURE_MIN, MOISTURE_MAX);
+auto moistureSensor = CapacitiveSoilMoistureSensor(ANALOG_READ_MOISTURE,
+                                                   MOISTURE_MIN, MOISTURE_MAX);
 auto pump = UnderWaterPump(DIGITAL_WRITE_PUMP);
 auto button = Button(DIGITAL_IN_BUTTON);
 
 auto Linsey = Plant("Linsey", pump, moistureSensor);
 
-void setup()
-{
-    Serial.begin(9600);
-}
+void setup() { Serial.begin(9600); }
 
-void loop()
-{
-    if (button.isSystemSwitchedOn())
-    {
-        Linsey.waterIfRequired();
-    }
-    else
-    {
-        Linsey.shutDown();
-    }
-    delay(100);
+void loop() {
+  if (button.isSystemSwitchedOn()) {
+    Linsey.waterIfRequired();
+  } else {
+    Linsey.shutDown();
+  }
+  delay(100);
 }
